@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-//import logo from './logo.svg';
-//import './App.css';
-//import CartHeader from './components/CartHeader.js'
-//import CartFooter from './components/CartFooter.js'
-//import CartItems from './components/CartItems.js'
+import AddItem from './AddItem'
 const CartHeader = () => {
   return (
     <nav className="navbar navbar-dark bg-primary">
@@ -14,17 +10,18 @@ const CartHeader = () => {
 }
 
 const CartItems = (props) => {
-  console.log('props in cart items', props)
+  //console.log('props in cart items', props)
   let listItems = props.items.map((item, index) => {
-    console.log('item in a loop', item, index)
+    //console.log('item in a loop', item, index)
     return (
-      <div className="d-flex list-group-item" key={item.id}>
+      <div className="d-flex list-group-item" key={index}>
         <div className="col-md-8">{item.product.name}</div>
         <div className="col-md-2">{item.product.priceInCents}</div>
         <div className="col-md-2">{item.quantity}</div>
       </div>
     )
   })
+
   return (
     <div className="container">
       <h1>Cart Items</h1>
@@ -38,6 +35,7 @@ const CartItems = (props) => {
         </div>
         <div>
           {listItems}
+
         </div>
         {/* {props.cartItemsList} */}
       </div>
@@ -60,20 +58,45 @@ const CartFooter = (props) => {
   )
 }
 
+
+
 class App extends Component {
-  render() {
-    let cartItemsList = [
+  state = {
+    products: [
+      { id: 40, name: 'Mediocre Iron Watch', priceInCents: 399 },
+      { id: 41, name: 'Heavy Duty Concrete Plate', priceInCents: 499 },
+      { id: 42, name: 'Intelligent Paper Knife', priceInCents: 1999 },
+      { id: 43, name: 'Small Aluminum Keyboard', priceInCents: 2500 },
+      { id: 44, name: 'Practical Copper Plate', priceInCents: 1000 },
+      { id: 45, name: 'Awesome Bronze Pants', priceInCents: 399 },
+      { id: 46, name: 'Intelligent Leather Clock', priceInCents: 2999 },
+      { id: 47, name: 'Ergonomic Bronze Lamp', priceInCents: 40000 },
+      { id: 48, name: 'Awesome Leather Shoes', priceInCents: 3990 },
+    ],
+    cartItemsList: [
       { id: 1, product: { id: 40, name: 'Mediocre Iron Watch', priceInCents: 399 }, quantity: 1 },
       { id: 2, product: { id: 41, name: 'Heavy Duty Concrete Plate', priceInCents: 499 }, quantity: 2 },
       { id: 3, product: { id: 42, name: 'Intelligent Paper Knife', priceInCents: 1999 }, quantity: 1 },
     ]
+  }
 
-    console.log('items in App component', cartItemsList)
+  handleFormSubmit = (product) => {
+    const { cartItemsList } = this.state
 
+    this.setState({
+      cartItemsList: [...cartItemsList, product]
+    })
+  }
+
+  render() {
     return (
       <div>
         <CartHeader />
-        <CartItems items={cartItemsList} />
+        <CartItems items={this.state.cartItemsList} />
+        <AddItem
+          products={this.state.products}
+          handleFormSubmit={this.handleFormSubmit}
+        />
         <CartFooter copyright="2016" />
       </div>
     );
